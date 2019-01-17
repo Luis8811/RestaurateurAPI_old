@@ -1,0 +1,23 @@
+extends layout
+include _includes/sharedHTMLfunctions
+block content
+  .row.page-header
+    .col-lg-12
+      h1 Agregar producto
+  .row
+    .col-xs-12.col-md-6
+      form.form-horizontal(action='', method='post', role='form')
+        .form-group
+          label.col-xs-10.col-sm-2.control-label(for="description") Descripción
+          .col-xs-12.col-sm-10
+            input#name.form-control(name="description", placeholder="descripción del producto")
+        .form-group
+          label.col-xs-10.col-sm-2.control-label(for="price") Precio
+          .col-xs-12.col-sm-10
+            input#name.form-control(name="price", placeholder="Introduzca un número")
+        .form-group
+          label.col-sm-2.control-label(for="flavors") Sabores
+          .col-sm-10
+            textarea#review.form-control(name="flavors", rows="5", placeholder="Separe los sabores por un espacio")
+        button.btn.btn-default.pull-right Agregar producto
+    .col-xs-12.col-md-4
