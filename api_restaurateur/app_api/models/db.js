@@ -1,6 +1,5 @@
 var mongoose = require( 'mongoose' );
-var dbURI = 'mongodb://localhost/dulcelandia'; // Mongoose connection
-//usuario Luis, clave 123, BD dulcelandia
+var dbURI = 'mongodb://localhost/restaurateur'; // Mongoose connection
 mongoose.connect(dbURI);
 
 //Monitorización de la conexión a la BD con eventos Mongoose
