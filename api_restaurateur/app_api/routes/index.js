@@ -3,6 +3,8 @@ var express = require('express');
 var router = express.Router();
 // var ctrlProducts = require('../controllers/products');
 var ctrlStaff = require('../controllers/staff');
+var ctrlClients = require('../controllers/clients');
+var ctrlProcesses = require('../controllers/processes');
 
 
 // Products
@@ -15,5 +17,13 @@ var ctrlStaff = require('../controllers/staff');
 
 // Staff
 router.get('/workers', ctrlStaff.readStaff); // leer todos los trabajadores
+
+
+// Clients
+router.get('/clients', ctrlClients.readClients); // read all the clients
+
+
+// Processes
+router.get('/products', ctrlProcesses.readProducts); // read all the products
 
 module.exports = router;
