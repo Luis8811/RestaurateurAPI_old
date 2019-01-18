@@ -1,0 +1,5 @@
+Estoy usando para probar la API el programa Postman. La colección se llama Restaurateur.
+
+Para tener sincronizado mi trabajo he creado una cuenta en Postman a la que accedo con mi cuenta de Google.
+
+La cuenta de Google con la que accedo a Postman es: lsuarezg8811@gmail.com
