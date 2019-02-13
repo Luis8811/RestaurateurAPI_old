@@ -40,14 +40,14 @@ module.exports.readAllFactsOfRegisteredClients = async function(req, res){
 };
 
 // Function to read an specific fact from the collection fact_registered_clients
-module.exports.readAFactOfRegisteredClients = async function(req, res){
+module.exports.readAFactOfRegisteredClients =  function(req, res){
   Fact_Registered_Clients
-  .find({})
+  .find({date: req.params.date})
   .exec(function (err, fact){
     if(!fact){
-      sendJSONresponse(res, 404, {"message" : "Fact not found"});
+      sendJSONresponse(res, 404, 'Check the format of the URL. No clients were registered in the date provided.');
     }else if(err){
-      sendJSONresponse(res, 404, err);
+      sendJSONresponse(res, 500, 'An error have ocurred. Please try connect again later');
     }else{
       sendJSONresponse(res, 200, fact);
     }
@@ -58,7 +58,7 @@ module.exports.readAFactOfRegisteredClients = async function(req, res){
 // Function to read the number of registered clients on a day
 module.exports.readNumberOfRegisteredClientsOnADay = function(req, res){
   Fact_Registered_Clients //Mongoose model
-   .find({date: req.params.date})
+   .find({date: req.params.date}, {_id:0, date:0, registeredClients:0})
    .exec(function (err, count){
      if(err){
        sendJSONresponse(res, 404, 'Check the format of the URL. No clients were registered in the date provided.');
@@ -67,17 +67,6 @@ module.exports.readNumberOfRegisteredClientsOnADay = function(req, res){
        console.log("Date: " + req.params.date);
      }
    });
-   
-   /*
-   .exec(function (err, reg_clients){
-    if(!reg_clients){
-      sendJSONresponse(res, 404, {"message" : "no se han encontrado clientes registrados en esa fecha"}); //poner texto en inglés
-    }else if(err){
-      sendJSONresponse(res, 404, err);
-    }else{
-      sendJSONresponse(res, 200, reg_clients);
-    }
-   }); */
-
 };
+
 
