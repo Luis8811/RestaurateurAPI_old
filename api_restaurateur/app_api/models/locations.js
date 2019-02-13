@@ -15,6 +15,14 @@ var clientSchema = new mongoose.Schema({
     registration_date: {type: Date, required: true}
 });
 
+// Schema of the fact of the registered clients on a day
+// FIXME Arreglar el tipo de dato del campo date, he puesto String para poder realizar las búsquedas con find 
+var factRegisteredClientSchema = new mongoose.Schema({
+   date: {type: String, required: true},
+   registeredClients: [mongoose.Schema.Types.ObjectId],
+   count: {type: Number, required: true, min: 0}
+});
+
 //Schema of the collection of products
 var productSchema = new mongoose.Schema({
     name: {type: String, required: true, maxlength: 30},
@@ -41,3 +49,4 @@ mongoose.model('Client', clientSchema);  //To compile schema clientSchema
 mongoose.model('Worker', workerSchema);
 mongoose.model('Product', productSchema);
 mongoose.model('Fact_new_client', factNewClientsSchema);
+mongoose.model('Fact_registered_client', factRegisteredClientSchema, 'fact_registered_clients');
