@@ -34,7 +34,15 @@ var productSchema = new mongoose.Schema({
 var workerSchema = new mongoose.Schema({
     name: {type: String, required: true, maxlength: 30},
     sex: {type: String, required: true, maxlength: 1}, 
-    identification: {type: String, required: true, maxlength: 20}
+    identification: {type: String, required: true, maxlength: 20},
+    job_title: {type: String, required: true, maxlength: 20}
+});
+
+//Schema of the collection of complaints and claims
+var complaintsAndClaimsSchema = new mongoose.Schema({
+   category: {type: String, required: true, maxlength: 15},
+   type: {type: String, required: true, maxlength: 30},
+   text: {type: String, required: true, maxlength: 70}
 });
 
 //Schemas of the collections of facts 
@@ -50,3 +58,4 @@ mongoose.model('Worker', workerSchema);
 mongoose.model('Product', productSchema);
 mongoose.model('Fact_new_client', factNewClientsSchema);
 mongoose.model('Fact_registered_client', factRegisteredClientSchema, 'fact_registered_clients');
+mongoose.model('ComplaintsAndClaims', complaintsAndClaimsSchema, 'complaints_and_claims');

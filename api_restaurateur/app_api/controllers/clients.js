@@ -69,4 +69,34 @@ module.exports.readNumberOfRegisteredClientsOnADay = function(req, res){
    });
 };
 
+// Function to read the number of registered clients on a day
+//FIXME Arreglar para que devuelva la cantidad de clientes registrados en un período
+module.exports.readNumberOfRegisteredClientsInAPeriod = function(req, res){
+  Fact_Registered_Clients //Mongoose model
+   .find({date: req.params.date}, {_id:0, date:0, registeredClients:0})
+   .exec(function (err, count){
+     if(err){
+       sendJSONresponse(res, 404, 'Check the format of the URL. No clients were registered in the date provided.');
+     }else{
+       sendJSONresponse(res, 200, count);
+       console.log("Date: " + req.params.date);
+     }
+   });
+};
+
+// Function to read all the requests of a client
+//FIXME Arreglar para que devuelva los pedidos o solicitudes de un cliente
+module.exports.readRequestsOfClient = function(req, res){
+  Fact_Registered_Clients //Mongoose model
+   .find({date: req.params.date}, {_id:0, date:0, registeredClients:0})
+   .exec(function (err, count){
+     if(err){
+       sendJSONresponse(res, 404, 'Check the format of the URL. No clients were registered in the date provided.');
+     }else{
+       sendJSONresponse(res, 200, count);
+       console.log("Date: " + req.params.date);
+     }
+   });
+};
+
 
