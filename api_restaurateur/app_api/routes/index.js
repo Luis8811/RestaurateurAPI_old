@@ -18,6 +18,7 @@ var ctrlProcesses = require('../controllers/processes');
 // Staff
 router.get('/workers', ctrlStaff.readStaff); // leer todos los trabajadores
 router.get('/complaints_and_claims', ctrlStaff.readAllComplaintsAndClaims); // read all complaints and claims
+router.get('/facts_complaints_and_claims', ctrlStaff.readAllFactsOfComplaintsAndClaims); // read all facts of complaints and claims
 
 // Clients
 router.get('/clients', ctrlClients.readClients); // read all the clients

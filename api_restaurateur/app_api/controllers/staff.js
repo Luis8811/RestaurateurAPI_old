@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Worker = mongoose.model('Worker'); //el modelo de la BD compilado en locations.js
 var ComplaintsAndClaims = mongoose.model('ComplaintsAndClaims');
+var FactComplaintsAndClaims = mongoose.model('Fact_complaints_and_claims');
 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
@@ -27,6 +28,21 @@ module.exports.readStaff = async function(req, res){
   // Function to read all the complaints and claims
   module.exports.readAllComplaintsAndClaims = async function(req, res){
     ComplaintsAndClaims //Mongoose model
+     .find({})
+     .exec(function (err, complaintsAndClaims){
+      if(!complaintsAndClaims){
+        sendJSONresponse(res, 404, {"message" : "Complaints neither claims was found"});
+      }else if(err){
+        sendJSONresponse(res, 404, err);
+      }else{
+        sendJSONresponse(res, 200, complaintsAndClaims);
+      }
+     });
+  };
+
+  // Function to read all the facts of complaints and claims
+  module.exports.readAllFactsOfComplaintsAndClaims = async function(req, res){
+    FactComplaintsAndClaims //Mongoose model
      .find({})
      .exec(function (err, complaintsAndClaims){
       if(!complaintsAndClaims){
