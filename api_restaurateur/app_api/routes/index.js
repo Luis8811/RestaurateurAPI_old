@@ -19,6 +19,10 @@ var ctrlProcesses = require('../controllers/processes');
 router.get('/workers', ctrlStaff.readStaff); // leer todos los trabajadores
 router.get('/complaints_and_claims', ctrlStaff.readAllComplaintsAndClaims); // read all complaints and claims
 router.get('/facts_complaints_and_claims', ctrlStaff.readAllFactsOfComplaintsAndClaims); // read all facts of complaints and claims
+//FIXME Arreglar para que devuelva la cantidad de quejas y reclamaciones en un período. Creo que debo usar parámetros de fecha de inicio y fin
+router.get('/sss',ctrlStaff.countOfComplaintsAndClaimsInAPeriod); // returns the count of complaints and claims in a period
+//FIXME Arreglar para que devuelva la cantidad de quejas y reclamaciones en un período a un trabajador. Creo que debo usar parámetros de fecha de inicio y fin y trabajador
+router.get('/ssaaass',ctrlStaff.countOfComplaintsAndClaimsInAPeriodToAWorker); // returns the count of complaints and claims in a period to a worker
 
 // Clients
 router.get('/clients', ctrlClients.readClients); // read all the clients

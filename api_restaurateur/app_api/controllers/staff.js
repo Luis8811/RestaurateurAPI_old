@@ -54,3 +54,36 @@ module.exports.readStaff = async function(req, res){
       }
      });
   };
+
+  
+  // Function to read the number of the facts of complaints and claims in a period
+  //FIXME Arreglar, creo que en esta función deberé usar parámetros de fechas de inicio y fin
+  module.exports.countOfComplaintsAndClaimsInAPeriod = async function(req, res){
+    FactComplaintsAndClaims //Mongoose model
+     .find({})
+     .exec(function (err, complaintsAndClaims){
+      if(!complaintsAndClaims){
+        sendJSONresponse(res, 404, {"message" : "Complaints neither claims was found"});
+      }else if(err){
+        sendJSONresponse(res, 404, err);
+      }else{
+        sendJSONresponse(res, 200, complaintsAndClaims);
+      }
+     });
+  };
+
+   // Function to read the number of the facts of complaints and claims in a period to a worker
+  //FIXME Arreglar, creo que en esta función deberé usar parámetros de fechas de inicio y fin y el trabajador
+  module.exports.countOfComplaintsAndClaimsInAPeriodToAWorker = async function(req, res){
+    FactComplaintsAndClaims //Mongoose model
+     .find({})
+     .exec(function (err, complaintsAndClaims){
+      if(!complaintsAndClaims){
+        sendJSONresponse(res, 404, {"message" : "Complaints neither claims was found"});
+      }else if(err){
+        sendJSONresponse(res, 404, err);
+      }else{
+        sendJSONresponse(res, 200, complaintsAndClaims);
+      }
+     });
+  };
