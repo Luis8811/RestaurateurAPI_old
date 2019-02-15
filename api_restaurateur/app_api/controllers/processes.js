@@ -51,15 +51,14 @@ module.exports.readProducts = async function(req, res){
  };
 
  //Function to read an specific request
- //FIXME Arreglar para que devuelva una solicitud o pedido específica
- module.exports.readARequest =  function(req, res){
-  Product
-   .count({name: {$exists: true}, price: {$exists: true}, description: {$exists: true}})
-   .exec(function (err, count){
+ module.exports.readARequest = async function(req, res){
+  Request
+   .findById(req.params.requestId)
+   .exec(function (err, request){
      if(err){
        sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
      }else{
-       sendJSONresponse(res, 200, count);
+       sendJSONresponse(res, 200, request);
      }
    });
 };

@@ -40,6 +40,5 @@ router.get('/requestsOfClient/:idClient',ctrlClients.readRequestsOfClient); // r
 router.get('/products', ctrlProcesses.readProducts); // read all the products
 router.get('/countOfProducts', ctrlProcesses.countOfProducts); // read the count of products 
 router.get('/requests', ctrlProcesses.readAllRequests); // read all the requests
-//FIXME Arreglar para que devuelva la solicitud o pedido específica
 router.get('/requests/:requestId', ctrlProcesses.readARequest); // read an specific request
 module.exports = router;
