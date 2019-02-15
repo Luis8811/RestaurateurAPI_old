@@ -30,6 +30,12 @@ var productSchema = new mongoose.Schema({
     description: {type: String, required: true, maxlength: 50}
 });
 
+//Schema of the collection of requests
+var requestSchema = new mongoose.Schema({
+    products: {type: [mongoose.Schema.Types.ObjectId], required: true},
+    description: {type: String, maxlength: 200}
+});
+
 //Schema of the collection of workers
 var workerSchema = new mongoose.Schema({
     name: {type: String, required: true, maxlength: 30},
@@ -68,3 +74,4 @@ mongoose.model('Fact_new_client', factNewClientsSchema);
 mongoose.model('Fact_registered_client', factRegisteredClientSchema, 'fact_registered_clients');
 mongoose.model('ComplaintsAndClaims', complaintsAndClaimsSchema, 'complaints_and_claims');
 mongoose.model('Fact_complaints_and_claims', factComplaintsAndClaimsSchema, 'fact_complaints_and_claims');
+mongoose.model('Request', requestSchema);
