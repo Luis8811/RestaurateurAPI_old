@@ -76,3 +76,16 @@ module.exports.readProducts = async function(req, res){
      }
    });
 };
+
+//Function to read an specific fact of request
+module.exports.readAFactRequest = async function(req, res){
+  Fact_Request
+   .findById(req.params.requestId)
+   .exec(function (err, request){
+     if(err){
+       sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
+     }else{
+       sendJSONresponse(res, 200, request);
+     }
+   });
+};
