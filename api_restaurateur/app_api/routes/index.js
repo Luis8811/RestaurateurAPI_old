@@ -41,4 +41,5 @@ router.get('/products', ctrlProcesses.readProducts); // read all the products
 router.get('/countOfProducts', ctrlProcesses.countOfProducts); // read the count of products 
 router.get('/requests', ctrlProcesses.readAllRequests); // read all the requests
 router.get('/requests/:requestId', ctrlProcesses.readARequest); // read an specific request
+router.get('/facts_requests', ctrlProcesses.readAllFactsOfRequests); // read all facts of the requests
 module.exports = router;

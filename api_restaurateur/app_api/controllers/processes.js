@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Product = mongoose.model('Product');
 var Request = mongoose.model('Request');
+var Fact_Request = mongoose.model('Fact_request');
 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
@@ -59,6 +60,19 @@ module.exports.readProducts = async function(req, res){
        sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
      }else{
        sendJSONresponse(res, 200, request);
+     }
+   });
+};
+
+ //Function to read all the facts of requests
+ module.exports.readAllFactsOfRequests =  function(req, res){
+  Fact_Request
+   .find({})
+   .exec(function (err, requests){
+     if(err){
+       sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
+     }else{
+       sendJSONresponse(res, 200, requests);
      }
    });
 };
