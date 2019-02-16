@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Product = mongoose.model('Product');
 var Request = mongoose.model('Request');
 var Fact_Request = mongoose.model('Fact_request');
+var Fact_Sold_Product = mongoose.model('Fact_sold_product');
 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
@@ -87,5 +88,20 @@ module.exports.readAFactRequest = async function(req, res){
      }else{
        sendJSONresponse(res, 200, request);
      }
+   });
+};
+
+// Function to read all the facts of sold products
+module.exports.readFactsOfSoldProducts = async function(req, res){
+  Fact_Sold_Product //Mongoose model
+   .find({})
+   .exec(function (err, products){
+    if(!products){
+      sendJSONresponse(res, 404, {"message" : "products not found"});
+    }else if(err){
+      sendJSONresponse(res, 404, err);
+    }else{
+      sendJSONresponse(res, 200, products);
+    }
    });
 };

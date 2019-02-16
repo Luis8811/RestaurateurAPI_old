@@ -43,5 +43,6 @@ router.get('/requests', ctrlProcesses.readAllRequests); // read all the requests
 router.get('/requests/:requestId', ctrlProcesses.readARequest); // read an specific request
 router.get('/facts_requests', ctrlProcesses.readAllFactsOfRequests); // read all facts of the requests
 router.get('/facts_requests/:requestId', ctrlProcesses.readAFactRequest); // read an specific fact of request
+router.get('/facts_sold_products',ctrlProcesses.readFactsOfSoldProducts); // read all the facts of sold products
 
 module.exports = router;
