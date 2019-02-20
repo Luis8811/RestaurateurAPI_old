@@ -46,4 +46,5 @@ router.get('/facts_requests/:requestId', ctrlProcesses.readAFactRequest); // rea
 router.get('/facts_sold_products',ctrlProcesses.readFactsOfSoldProducts); // read all the facts of sold products
 router.get('/facts_sold_products/:factId',ctrlProcesses.readAFactOfSoldProducts); // read an specific fact of sold products
 router.post('/requests_in_date_range', ctrlProcesses.readAllFactsOfRequestsInADateRange); // read all the facts of requests in a date range
+router.post('/count_requests_in_date_range',ctrlProcesses.readCountOfFactsOfRequestsInADateRange); // counts the number of the facts of requests in a date range
 module.exports = router;

@@ -153,3 +153,26 @@ module.exports.readAllFactsOfRequestsInADateRange =  function(req, res){
      }
    });
 };
+// Function to count the facts of requests between two dates
+module.exports.readCountOfFactsOfRequestsInADateRange =  function(req, res){
+  Fact_Request
+   .find({})
+   .exec(function (err, requests){
+     if(err){
+       sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
+     }else{
+       var beginDate = req.body.beginDate;
+       var endDate = req.body.endDate;
+       var indexOfRequest = 0;
+       var count = 0;
+       var currentDate = "";
+       for(indexOfRequest = 0; indexOfRequest < requests.length; indexOfRequest++){
+         currentDate = requests[indexOfRequest].date;
+         if(isDateInRange(beginDate, endDate, currentDate)){
+           count++;
+         }
+       }
+       sendJSONresponse(res, 201, count);
+     }
+   });
+};
