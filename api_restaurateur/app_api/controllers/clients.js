@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 var Client = mongoose.model('Client');
 var Fact_Registered_Clients = mongoose.model('Fact_registered_client');
-
+var Request = mongoose.model('Request');
+var Fact_Request = mongoose.model('Fact_request');
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
     console.log(content);
@@ -85,16 +86,32 @@ module.exports.readNumberOfRegisteredClientsInAPeriod = function(req, res){
 };
 
 // Function to read all the requests of a client
-//FIXME Arreglar para que devuelva los pedidos o solicitudes de un cliente
-module.exports.readRequestsOfClient = function(req, res){
-  Fact_Registered_Clients //Mongoose model
-   .find({date: req.params.date}, {_id:0, date:0, registeredClients:0})
-   .exec(function (err, count){
+//FIXME Devuelve los pedidos de un cliente, debo ver cómo hago con algún patrón o algo para poner los nombres de los productos
+module.exports.readRequestsOfClient = async function(req, res){
+  var myObject = new mongoose.Types.ObjectId(req.body.client_id);
+  Fact_Request //Mongoose model
+   .find({client_id: myObject}, {_id:0, date:0, time:0, client_id:0})
+   .exec(function (err, requests){
      if(err){
-       sendJSONresponse(res, 404, 'Check the format of the URL. No clients were registered in the date provided.');
+       sendJSONresponse(res, 404, 'An error happened.');
+       Console.log("client_id: " + req.body.client_id);
      }else{
-       sendJSONresponse(res, 200, count);
-       console.log("Date: " + req.params.date);
+       var arrayOfObjectId = new Array();
+       var index = 0;
+       for(index = 0; index < requests.length; index++){
+         arrayOfObjectId[index] = requests[index].request_id;
+         console.log("item: " + arrayOfObjectId[index]);
+       }
+       Request
+       .find({_id: {$in: arrayOfObjectId}})
+       .exec(function (err2, r2){
+         if(err2){
+          sendJSONresponse(res, 404, 'An error happened when trying access to requests.');
+         }else{
+           sendJSONresponse(res, 201, r2);
+         }
+       });
+       //sendJSONresponse(res, 201, requests);
      }
    });
 };

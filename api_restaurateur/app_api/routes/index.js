@@ -34,7 +34,7 @@ router.get('/factsRegisteredClients/:date',ctrlClients.readAFactOfRegisteredClie
 router.get('/numberOfRegisteredClientsInAPeriod', ctrlClients.readNumberOfRegisteredClientsInAPeriod); // read the number of the clients registered in a period
 
 //FIXME Arreglar para que me devuelva todas las solicitudes de un cliente
-router.get('/requestsOfClient/:idClient',ctrlClients.readRequestsOfClient); // read all the requests of a client
+router.post('/requestsOfClient/',ctrlClients.readRequestsOfClient); // read all the requests of a client
 
 // Processes
 router.get('/products', ctrlProcesses.readProducts); // read all the products
