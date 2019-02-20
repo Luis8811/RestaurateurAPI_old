@@ -86,7 +86,7 @@ module.exports.readNumberOfRegisteredClientsInAPeriod = function(req, res){
 };
 
 // Function to read all the requests of a client
-//FIXME Devuelve los pedidos de un cliente, debo ver cómo hago con algún patrón o algo para poner los nombres de los productos
+//FIXME Devuelve los pedidos de un cliente, debo ver cómo hago con algún patrón o algo para poner los nombres de los productos pedidos, la fecha del pedido, etc.
 module.exports.readRequestsOfClient = async function(req, res){
   var myObject = new mongoose.Types.ObjectId(req.body.client_id);
   Fact_Request //Mongoose model

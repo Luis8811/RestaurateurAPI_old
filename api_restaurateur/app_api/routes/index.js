@@ -33,7 +33,7 @@ router.get('/factsRegisteredClients/:date',ctrlClients.readAFactOfRegisteredClie
 //FIXME Arreglar, creo que en esta ruta debo usar parámetros, debo de devolver todos los clientes registrados en un rango de fechas
 router.get('/numberOfRegisteredClientsInAPeriod', ctrlClients.readNumberOfRegisteredClientsInAPeriod); // read the number of the clients registered in a period
 
-//FIXME Arreglar para que me devuelva todas las solicitudes de un cliente
+//FIXME Me falta poner los nombres de los productos y la fecha de los pedidos pero el resto de los datos están OK
 router.post('/requestsOfClient/',ctrlClients.readRequestsOfClient); // read all the requests of a client
 
 // Processes
