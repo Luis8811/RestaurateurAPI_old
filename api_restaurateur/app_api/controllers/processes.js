@@ -10,6 +10,15 @@ var sendJSONresponse = function(res, status, content) {
     res.status(status).json(content); 
   };
 
+// Function to determine is currentDate is inside the range between bieginDate and endDate
+// The date format is YYYY-MM-DD
+var isDateInRange = function(beginDate, endDate, currentDate){
+  var objBeginDate = new Date(parseInt(beginDate.substr(0,4)), parseInt(beginDate.substr(5,2)), parseInt(beginDate.substr(8)));
+  var objEndDate = new Date(parseInt(endDate.substr(0,4)), parseInt(endDate.substr(5,2)), parseInt(endDate.substr(8)));
+  var objCurrentDate = new Date(parseInt(currentDate.substr(0,4)), parseInt(currentDate.substr(5,2)), parseInt(currentDate.substr(8)));
+  return ((objCurrentDate >= objBeginDate) && (objCurrentDate <= objEndDate)) ? true : false;
+}
+
 // Function to read all the products
 module.exports.readProducts = async function(req, res){
     Product //Mongoose model
@@ -115,6 +124,32 @@ module.exports.readAFactOfSoldProducts = async function(req, res){
        sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
      }else{
        sendJSONresponse(res, 200, fact);
+     }
+   });
+};
+
+//Function to read all the facts of requests between two dates
+module.exports.readAllFactsOfRequestsInADateRange =  function(req, res){
+  Fact_Request
+   .find({})
+   .exec(function (err, requests){
+     if(err){
+       sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
+     }else{
+       var beginDate = req.body.beginDate;
+       var endDate = req.body.endDate;
+       var arrayOfFactsOfRequestsInDateRange = new Array();
+       var indexOfRequest = 0;
+       var indexOfArrayOfFactsOfRequestsInDateRange = 0;
+       var currentDate = "";
+       for(indexOfRequest = 0; indexOfRequest < requests.length; indexOfRequest++){
+         currentDate = requests[indexOfRequest].date;
+         if(isDateInRange(beginDate, endDate, currentDate)){
+           arrayOfFactsOfRequestsInDateRange[indexOfArrayOfFactsOfRequestsInDateRange] = requests[indexOfRequest];
+           indexOfArrayOfFactsOfRequestsInDateRange++;
+         }
+       }
+       sendJSONresponse(res, 201, arrayOfFactsOfRequestsInDateRange);
      }
    });
 };
