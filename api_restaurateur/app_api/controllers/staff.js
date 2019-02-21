@@ -98,3 +98,22 @@ module.exports.readStaff = async function(req, res){
       }
      });
   };
+
+   // Function to read the facts of complaints and claims of a worker
+  module.exports.complaintsAndClaimsOfAWorker = async function(req, res){
+    console.log(req.body.workerid);
+    var objWorkerId = new mongoose.Types.ObjectId(req.body.workerid);
+    FactComplaintsAndClaims //Mongoose model
+     .find({worker_id: objWorkerId})
+     .exec(function (err, complaintsAndClaims){
+      if(!complaintsAndClaims){
+        sendJSONresponse(res, 404, {"message" : "Complaints neither claims was found"});
+       // console.log(objWorkerId);
+      }else if(err){
+        sendJSONresponse(res, 404, err);
+        //console.log(objWorkerId);
+      }else{
+        sendJSONresponse(res, 201, complaintsAndClaims);
+      }
+     }); 
+  };
