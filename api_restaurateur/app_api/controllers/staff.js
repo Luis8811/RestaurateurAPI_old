@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Worker = mongoose.model('Worker'); //el modelo de la BD compilado en locations.js
 var ComplaintsAndClaims = mongoose.model('ComplaintsAndClaims');
 var FactComplaintsAndClaims = mongoose.model('Fact_complaints_and_claims');
+var utils = require('./utils'); 
 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
@@ -57,7 +58,6 @@ module.exports.readStaff = async function(req, res){
 
   
   // Function to read the number of the facts of complaints and claims in a period
-  //FIXME Arreglar, creo que en esta función deberé usar parámetros de fechas de inicio y fin
   module.exports.countOfComplaintsAndClaimsInAPeriod = async function(req, res){
     FactComplaintsAndClaims //Mongoose model
      .find({})
@@ -67,7 +67,18 @@ module.exports.readStaff = async function(req, res){
       }else if(err){
         sendJSONresponse(res, 404, err);
       }else{
-        sendJSONresponse(res, 200, complaintsAndClaims);
+       var beginDate = req.body.beginDate;
+       var endDate = req.body.endDate;
+       var indexOfComplaintsAndClaims = 0;
+       var count = 0;
+       var currentDate = "";
+       for(indexOfComplaintsAndClaims = 0; indexOfComplaintsAndClaims < complaintsAndClaims.length; indexOfComplaintsAndClaims++){
+         currentDate = complaintsAndClaims[indexOfComplaintsAndClaims].date;
+         if(utils.isDateInRange(beginDate, endDate, currentDate)){
+           count++;
+         }
+       }
+       sendJSONresponse(res, 201, count);
       }
      });
   };
