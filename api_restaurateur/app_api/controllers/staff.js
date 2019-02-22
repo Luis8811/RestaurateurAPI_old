@@ -84,17 +84,28 @@ module.exports.readStaff = async function(req, res){
   };
 
    // Function to read the number of the facts of complaints and claims in a period to a worker
-  //FIXME Arreglar, creo que en esta función deberé usar parámetros de fechas de inicio y fin y el trabajador
   module.exports.countOfComplaintsAndClaimsInAPeriodToAWorker = async function(req, res){
+    var objWorkerId = new mongoose.Types.ObjectId(req.body.workerid);
     FactComplaintsAndClaims //Mongoose model
-     .find({})
+     .find({worker_id: objWorkerId})
      .exec(function (err, complaintsAndClaims){
       if(!complaintsAndClaims){
         sendJSONresponse(res, 404, {"message" : "Complaints neither claims was found"});
       }else if(err){
         sendJSONresponse(res, 404, err);
       }else{
-        sendJSONresponse(res, 200, complaintsAndClaims);
+        var beginDate = req.body.beginDate;
+        var endDate = req.body.endDate;
+        var count = 0;
+        var indexOfComplaintsAndClaimsOfWorker = 0;
+        var currentDate = "";
+        for(indexOfComplaintsAndClaimsOfWorker = 0; indexOfComplaintsAndClaimsOfWorker < complaintsAndClaims.length; indexOfComplaintsAndClaimsOfWorker++){
+          currentDate = complaintsAndClaims[indexOfComplaintsAndClaimsOfWorker].date;
+          if(utils.isDateInRange(beginDate, endDate, currentDate)){
+            count++;
+          }
+        }
+        sendJSONresponse(res, 201, count);
       }
      });
   };
