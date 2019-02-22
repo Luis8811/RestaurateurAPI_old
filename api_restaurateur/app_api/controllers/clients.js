@@ -3,6 +3,7 @@ var Client = mongoose.model('Client');
 var Fact_Registered_Clients = mongoose.model('Fact_registered_client');
 var Request = mongoose.model('Request');
 var Fact_Request = mongoose.model('Fact_request');
+var utils = require('./utils'); 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
     console.log(content);
@@ -70,17 +71,26 @@ module.exports.readNumberOfRegisteredClientsOnADay = function(req, res){
    });
 };
 
-// Function to read the number of registered clients on a day
-//FIXME Arreglar para que devuelva la cantidad de clientes registrados en un período
+// Function to read the number of registered clients in a period
 module.exports.readNumberOfRegisteredClientsInAPeriod = function(req, res){
   Fact_Registered_Clients //Mongoose model
-   .find({date: req.params.date}, {_id:0, date:0, registeredClients:0})
-   .exec(function (err, count){
+   .find({})
+   .exec(function (err, facts){
      if(err){
        sendJSONresponse(res, 404, 'Check the format of the URL. No clients were registered in the date provided.');
      }else{
-       sendJSONresponse(res, 200, count);
-       console.log("Date: " + req.params.date);
+       var beginDate = req.body.beginDate;
+       var endDate = req.body.endDate;
+       var currentDate = "";
+       var countOfRegisteredClientsInPeriod = 0;
+       var index = 0;
+       for(index = 0; index < facts.length; index++){
+        currentDate = facts[index].date; 
+        if(utils.isDateInRange(beginDate, endDate, currentDate)){
+           countOfRegisteredClientsInPeriod += parseInt(facts[index].count);
+         }
+       }
+       sendJSONresponse(res, 201, countOfRegisteredClientsInPeriod);
      }
    });
 };

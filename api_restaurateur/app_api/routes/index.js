@@ -28,9 +28,7 @@ router.get('/clients', ctrlClients.readClients); // read all the clients
 router.get('/numberOfRegisteredClientsOnADay/:date', ctrlClients.readNumberOfRegisteredClientsOnADay); // read the number of the registered clients in a date
 router.get('/factsRegisteredClients',ctrlClients.readAllFactsOfRegisteredClients); // read all the facts of the registered clients
 router.get('/factsRegisteredClients/:date',ctrlClients.readAFactOfRegisteredClients); // read an specific fact from the collection fact_registered_clients
-
-//FIXME Arreglar, creo que en esta ruta debo usar parámetros, debo de devolver todos los clientes registrados en un rango de fechas
-router.get('/numberOfRegisteredClientsInAPeriod', ctrlClients.readNumberOfRegisteredClientsInAPeriod); // read the number of the clients registered in a period
+router.post('/numberOfRegisteredClientsInAPeriod', ctrlClients.readNumberOfRegisteredClientsInAPeriod); // read the number of the clients registered in a period
 
 //FIXME Me falta poner los nombres de los productos y la fecha de los pedidos pero el resto de los datos están OK
 router.post('/requestsOfClient/',ctrlClients.readRequestsOfClient); // read all the requests of a client
