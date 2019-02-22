@@ -207,3 +207,45 @@ module.exports.countServedClientsInAperiod = async function(req, res){
      }
    });
 };
+
+//Function to get the more sold products in a date range
+module.exports.moreSoldProducts = async function(req, res){
+  Fact_Sold_Product
+   .find()
+   .exec(function (err, fact){
+     if(err){
+       sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
+     }else{
+       var beginDate = req.body.beginDate;
+       var endDate = req.body.endDate;
+       var arrayOfSoldProducts = new Array();
+       var arrayOfCountsOfSoldsProducts = new Array();
+       var arrayOfResult = new Array();
+       var indexOfFact = 0;
+       var currentProductId = "";
+       var currentDate = "";
+       var indexOfSearch = -1;
+       for(indexOfFact = 0; indexOfFact < fact.length; indexOfFact++){
+         currentDate = fact[indexOfFact].date;
+         if(utils.isDateInRange(beginDate, endDate, currentDate)){
+           currentProductId = fact[indexOfFact].product_id.toString();
+           indexOfSearch = arrayOfSoldProducts.indexOf(currentProductId);
+           if(indexOfSearch==-1){
+             arrayOfSoldProducts.push(currentProductId);
+             arrayOfCountsOfSoldsProducts.push(parseInt(fact[indexOfFact].count));
+           }else{
+             arrayOfCountsOfSoldsProducts[indexOfSearch]+= parseInt(fact[indexOfFact].count);
+           }
+         }
+       }
+       var max = utils.maxValueOfTheArrayOfInt(arrayOfCountsOfSoldsProducts);
+       var j = 0;
+       for(j = 0; j < arrayOfCountsOfSoldsProducts.length; j++){
+         if(arrayOfCountsOfSoldsProducts[j] == max){
+           arrayOfResult.push(arrayOfSoldProducts[j]);
+         }
+       }
+       sendJSONresponse(res, 201, arrayOfResult);
+     }
+   });
+};
