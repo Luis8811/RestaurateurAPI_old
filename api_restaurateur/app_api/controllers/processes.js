@@ -3,6 +3,7 @@ var Product = mongoose.model('Product');
 var Request = mongoose.model('Request');
 var Fact_Request = mongoose.model('Fact_request');
 var Fact_Sold_Product = mongoose.model('Fact_sold_product');
+var utils = require('./utils'); 
 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
@@ -173,6 +174,36 @@ module.exports.readCountOfFactsOfRequestsInADateRange =  function(req, res){
          }
        }
        sendJSONresponse(res, 201, count);
+     }
+   });
+};
+
+//Function to count the number of served clients in a period
+module.exports.countServedClientsInAperiod = async function(req, res){
+  Fact_Request
+   .find({})
+   .exec(function (err, requests){
+     if(err){
+       sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
+     }else{
+       var beginDate = req.body.beginDate;
+       var endDate = req.body.endDate;
+       var currentDate = "";
+       var servedClients = new Array();
+       var countOfServedClients = 0;
+       var indexOfRequests = 0;
+       var currentClientID = "";
+       for(indexOfRequests = 0; indexOfRequests < requests.length; indexOfRequests++){
+         currentDate = requests[indexOfRequests].date;
+         if(utils.isDateInRange(beginDate, endDate, currentDate)){
+           currentClientID = requests[indexOfRequests].client_id.toString();
+           if(servedClients.indexOf(currentClientID)==-1){
+             servedClients.push(currentClientID);
+             countOfServedClients++;
+           }
+         }
+       }
+       sendJSONresponse(res, 201, countOfServedClients);
      }
    });
 };
