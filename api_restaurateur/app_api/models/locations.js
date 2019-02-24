@@ -74,10 +74,16 @@ var factRequestSchema = new mongoose.Schema({
 
 var factSoldProductSchema = new mongoose.Schema({
    date: {type: String, required: true},
-   product_id: {type: mongoose.Schema.Types.ObjectId, required: true},
-   count: {type: Number, required: true, min: 0}
+   income: {type: Number, required: true},
+   cost: {type: Number, required: true},
+   balance: {type: Number, required: true}
 });
 
+var factFinanceSchema = new mongoose.Schema({
+   date: {type: String, required: true},
+   income: {type: Number, required: true},
+   count: {type: Number, required: true, min: 0}
+});
 
 
 mongoose.model('Client', clientSchema);  //To compile schema clientSchema 
@@ -90,3 +96,4 @@ mongoose.model('Fact_complaints_and_claims', factComplaintsAndClaimsSchema, 'fac
 mongoose.model('Request', requestSchema);
 mongoose.model('Fact_request', factRequestSchema, 'fact_requests');
 mongoose.model('Fact_sold_product', factSoldProductSchema, 'fact_sold_products');
+mongoose.model('Fact_finance', factFinanceSchema, 'fact_finances');

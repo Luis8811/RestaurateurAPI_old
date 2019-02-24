@@ -5,8 +5,11 @@ var router = express.Router();
 var ctrlStaff = require('../controllers/staff');
 var ctrlClients = require('../controllers/clients');
 var ctrlProcesses = require('../controllers/processes');
+var ctrlFinances = require('../controllers/finances');
 
 
+// Finances
+router.get('/finances', ctrlFinances.readFinances); // leer todas las finanzas
 // Products
 //router.get('/products/:productid', ctrlProducts.readOneProduct);  // leer un producto
 //router.get('/products', ctrlProducts.readProducts);  // leer todos los productos
