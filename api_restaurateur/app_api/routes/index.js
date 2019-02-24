@@ -46,4 +46,5 @@ router.post('/requests_in_date_range', ctrlProcesses.readAllFactsOfRequestsInADa
 router.post('/count_requests_in_date_range',ctrlProcesses.readCountOfFactsOfRequestsInADateRange); // counts the number of the facts of requests in a date range
 router.post('/countServedClientsInDateRange',ctrlProcesses.countServedClientsInAperiod); // count the number of served clients in a period
 router.post('/moreSoldProductsInDateRange',ctrlProcesses.moreSoldProducts); // obtiene los productos más vendidos en un período
+router.post('/lessSoldProductsInDateRange', ctrlProcesses.lessSoldProducts); // obtiene los prouctos menos vendidos en un período
 module.exports = router;

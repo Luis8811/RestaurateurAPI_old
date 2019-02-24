@@ -20,3 +20,18 @@ module.exports.isDateInRange = function(beginDate, endDate, currentDate){
      }
      return currentValue;
   }
+
+   // Devuelve el item mínimo de un array, asume que el array tendrá números desde el cero en adelante, es decir naturales, si no hay mínimo devuelve -1
+   module.exports.minValueOfTheArrayOfInt = function(myArrayOfInt){
+    var currentValue = -1;
+    if(myArrayOfInt.length > 0){
+      currentValue = myArrayOfInt[0];
+    }
+    var i = 0;
+    for(i = 1; i< myArrayOfInt.length; i++){
+     if(myArrayOfInt[i] < currentValue){
+       currentValue = myArrayOfInt[i];
+     }
+    }
+    return currentValue;
+ }
