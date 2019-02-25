@@ -10,7 +10,7 @@ var app = express();
 var apiRoutes = require('./app_api/routes/index'); // rutas de la API
 
 app.set('views', path.join(__dirname, 'app_server', 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
