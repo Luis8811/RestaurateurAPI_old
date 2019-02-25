@@ -9,7 +9,8 @@ var ctrlFinances = require('../controllers/finances');
 
 
 // Finances
-router.get('/finances', ctrlFinances.readFinances); // leer todas las finanzas
+router.get('/finances', ctrlFinances.readFinances); // read all the finances
+router.post('/financesInDateRange',ctrlFinances.readFinancesInDateRange); // get finances in a period of time
 // Products
 //router.get('/products/:productid', ctrlProducts.readOneProduct);  // leer un producto
 //router.get('/products', ctrlProducts.readProducts);  // leer todos los productos

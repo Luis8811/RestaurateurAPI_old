@@ -81,8 +81,9 @@ var factSoldProductSchema = new mongoose.Schema({
 
 var factFinanceSchema = new mongoose.Schema({
    date: {type: String, required: true},
-   income: {type: Number, required: true},
-   count: {type: Number, required: true, min: 0}
+   income: {type: Number, required: true, min: 0},
+   balance: {type: Number, required: true, min: 0},
+   cost: {type: Number, required: true, min: 0}
 });
 
 
