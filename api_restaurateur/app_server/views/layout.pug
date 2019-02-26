@@ -2,10 +2,32 @@ doctype html
 html
   head
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title Dulcelandia
+    title Restaurateur
     link(rel='stylesheet', href='/bootstrap/css/amelia.bootstrap.css')
   body
+   // Barra de navegación de los idiomas
    .navbar.navbar-default.navbar-fixed-top
+      .container
+          ul.nav.navbar-nav
+            li
+            a(href='/spanishLanguage') Spanish
+            li
+            |  
+            li
+            a(href='/englishLanguage') English
+            li
+            | 
+            a(href='/login') Login 
+
+   // Barra de navegación del Logo del sitio web
+   .navbar.navbar-default
+     .container
+       ul.nav.navbar-nav
+         li
+           img(src="/images/logo.jpg", alt="Restaurateur logo", height="150px", width="130")
+
+   // Barra de navegación de las perspectivas del CMI
+   .navbar.navbar-default.navbar
       .container
         .navbar-header
           a.navbar-brand(href='/') Inicio
@@ -16,21 +38,21 @@ html
         #navbar-main.navbar-collapse.collapse
           ul.nav.navbar-nav
             li
-             a(href='/administration/') Administración
+             a(href='/processes_stats') Procesos
             li
-             a(href='/products/') Productos
+             a(href='/products/') Finanzas
             li
-             a(href='/add_product/') Agregar productos
+             a(href='/add_product/') Clientes
             li
-             a(href='/contact_us/') Contáctenos
+             a(href='/contact_us/') Personal
 
       .container
       block content
 
-      footer
+  footer
         .row
           .col-xs-12
             small &copy; Luis Manuel Suárez González 2018
 
-      script(src='/javascripts/jquery.min.js')
-      script(src='/bootstrap/js/bootstrap.min.js')
+  script(src='/javascripts/jquery.min.js')
+  script(src='/bootstrap/js/bootstrap.min.js')

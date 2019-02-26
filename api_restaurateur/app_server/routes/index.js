@@ -11,4 +11,5 @@ router.get('/contact_us', mainController.contactUs);
 router.get('/add_product', mainController.addProduct);
 router.get('/deleteProduct/:productid', productsController.deleteProduct);
 router.post('/add_product/', productsController.createProduct);
+router.get('/processes_stats', mainController.processesStats);
 module.exports = router;
