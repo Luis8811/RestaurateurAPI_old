@@ -12,6 +12,8 @@ var sendJSONresponse = function(res, status, content) {
 
 // Function to read all the clients
 module.exports.readClients = async function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
     Client //Mongoose model
      .find({})
      .exec(function (err, clients){

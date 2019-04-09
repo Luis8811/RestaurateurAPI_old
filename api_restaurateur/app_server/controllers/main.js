@@ -1,4 +1,5 @@
 //controlador principal de la app
+var utils = require('../controllers/utils');
 module.exports.load = function(req, res){
     res.render('index', {title: 'Resumen de estadísticas', welcome_message: 'El CMI con las estadísticas'});
    };
@@ -22,6 +23,7 @@ module.exports.processesStats = function(req, res){
 
 // Finances stats
 module.exports.financesStats = function(req, res){
+    utils.createBarChart();
     res.render('finances_stats', {title_of_perspective: 'Perspectiva de finanzas', costos:'Costos: 900', ingresos:'Ingresos: 1000', saldo:'Saldo: 100'});
 }
 

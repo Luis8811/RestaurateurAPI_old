@@ -28,6 +28,14 @@ router.post('/complaintsAndClaimsOfAWorker',ctrlStaff.complaintsAndClaimsOfAWork
 router.post('/countOfComplaintsAndClaimsOfAWorkerInADateRange',ctrlStaff.countOfComplaintsAndClaimsInAPeriodToAWorker); // returns the count of complaints and claims in a period to a worker
 
 // Clients
+
+
+
+  /*
+  app.get('/clients', function(req, res, next) {
+    // Handle the get for this route
+  });*/
+
 router.get('/clients', ctrlClients.readClients); // read all the clients
 router.get('/numberOfRegisteredClientsOnADay/:date', ctrlClients.readNumberOfRegisteredClientsOnADay); // read the number of the registered clients in a date
 router.get('/factsRegisteredClients',ctrlClients.readAllFactsOfRegisteredClients); // read all the facts of the registered clients

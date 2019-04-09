@@ -38,6 +38,8 @@ module.exports.readProducts = async function(req, res){
 
   //Function to read the count of products
   module.exports.countOfProducts =  function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
      Product
       .count({name: {$exists: true}, price: {$exists: true}, description: {$exists: true}})
       .exec(function (err, count){
