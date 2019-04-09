@@ -47,6 +47,7 @@ router.post('/requestsOfClient/',ctrlClients.readRequestsOfClient); // read all 
 
 // Processes
 router.get('/products', ctrlProcesses.readProducts); // read all the products
+router.post('/products', ctrlProcesses.createProduct); // create a product
 router.get('/countOfProducts', ctrlProcesses.countOfProducts); // read the count of products 
 router.get('/requests', ctrlProcesses.readAllRequests); // read all the requests
 router.get('/requests/:requestId', ctrlProcesses.readARequest); // read an specific request

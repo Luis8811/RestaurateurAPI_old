@@ -293,3 +293,23 @@ module.exports.lessSoldProducts = async function(req, res){
      }
    });
 };
+
+//Function to create a new product
+module.exports.createProduct = async function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  Product.create({
+    name: req.body.name,
+    price: req.body.price,
+    description: req.body.description
+  }, function(err, product) {
+    if (err) {
+      console.log(err);
+      sendJSONresponse(res, 400, err);
+    } else {
+      console.log(product);
+      sendJSONresponse(res, 201, product);
+    }
+  });
+
+};
