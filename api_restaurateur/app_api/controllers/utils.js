@@ -35,3 +35,8 @@ module.exports.isDateInRange = function(beginDate, endDate, currentDate){
     }
     return currentValue;
  }
+
+ // Función para mostrar en consola todas las cabeceras de una solicitud
+ module.exports.showHeadersFromResponse = function(res){
+   //
+ }

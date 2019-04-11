@@ -7,8 +7,10 @@ var utils = require('./utils');
 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
-    console.log(content);
-    res.status(status).json(content); 
+  res.set('Access-Control-Allow-Origin', '*');  
+  console.log(content);
+  res.status(status).json(content); 
+   // res.header('Access-Control-Allow-Origin', '*');
   };
 
 // Function to determine is currentDate is inside the range between bieginDate and endDate
@@ -22,6 +24,11 @@ var isDateInRange = function(beginDate, endDate, currentDate){
 
 // Function to read all the products
 module.exports.readProducts = async function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
     Product //Mongoose model
      .find({})
      .exec(function (err, products){
@@ -40,6 +47,8 @@ module.exports.readProducts = async function(req, res){
   module.exports.countOfProducts =  function(req, res){
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+  res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
      Product
       .count({name: {$exists: true}, price: {$exists: true}, description: {$exists: true}})
       .exec(function (err, count){
@@ -296,18 +305,25 @@ module.exports.lessSoldProducts = async function(req, res){
 
 //Function to create a new product
 module.exports.createProduct = async function(req, res){
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+res.header('Access-Control-Allow-Origin', '*');
+res.set('Access-Control-Allow-Origin', 'http://localhost:8100');
+res.set('MyHeader', 'Luis'); // Una prueba
+res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+res.header('Access-Control-Allow-Headers', 'Content-Type');
+//next();
   Product.create({
     name: req.body.name,
     price: req.body.price,
     description: req.body.description
   }, function(err, product) {
+    //res.header('Access-Control-Allow-Origin', '*');
     if (err) {
-      console.log(err);
+      console.log("API Message: An error ocurred.");
       sendJSONresponse(res, 400, err);
     } else {
-      console.log(product);
+      console.log("API Message: A product was inserted.");
       sendJSONresponse(res, 201, product);
     }
   });

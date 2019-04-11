@@ -128,4 +128,70 @@ module.exports.readRequestsOfClient = async function(req, res){
    });
 };
 
-
+// Function to create a new client
+module.exports.createClient = async function(req, res){
+  Client
+  .find({name: req.body.name, sex: req.body.sex, email: req.body.email})
+  .exec(function(err, clientsFounded){
+    if(err){
+      sendJSONresponse(res, 404, 'An error happened.'); 
+    }else{
+      if(clientsFounded.length > 0){
+       sendJSONresponse(res,409,'Client already exists');
+      }else{
+        Client.create({
+          name: req.body.name,
+          sex: req.body.sex,
+          birthdate: req.body.birthdate,
+          telephone: req.body.telephone,
+          email: req.body.email,
+          registration_date: req.body.registration_date
+        }, function(errClient, clientCreated) {
+          if (errClient) {
+            console.log("API Message: An error ocurred at client registration process.");
+            sendJSONresponse(res, 400, errClient);
+          } else {
+            Fact_Registered_Clients
+            .find({date: req.body.registration_date})
+            .exec(function(errFactRegisteredClient, facts){
+              if(errFactRegisteredClient){
+                console.log("API Message: An error ocurred at client registration process. Problem at accessing to facts.");
+                sendJSONresponse(res, 500, errFactRegisteredClient);
+              }else{
+                if(facts.length>0){
+                  // Actualizando el hecho para modificar la cantidad de clientes registrados ese día. Asumo que solamente hay un hecho con esa fecha
+                   facts[0].count +=1;
+                   facts[0].registeredClients.push(clientCreated._id);
+                   facts[0].save(function(errUpdatingFact, factUpdated){
+                     if(errUpdatingFact){
+                      console.log("API Message: An error occurred at updating facts.");
+                      sendJSONresponse(res, 500, errUpdatingFact);
+                     }else{
+                      console.log("API Message: A new client was inserted.");
+                      sendJSONresponse(res, 201, clientCreated);
+                     }
+                   });
+                }else{
+                  // Creando un nuevo hecho para registrar que he creado un nuevo cliente
+                  Fact_Registered_Clients.create({
+                    date: req.body.registration_date,
+                    count: 1,
+                    registeredClients: [clientCreated._id]
+                  },function(errCreatingFact, factCreated){
+                    if(errCreatingFact){
+                      console.log("API Message: An error occurred at recording fact.");
+                      sendJSONresponse(res, 500, errCreatingFact);
+                    }else{
+                      console.log("API Message: A new client was inserted.");
+                      sendJSONresponse(res, 201, clientCreated);
+                    }
+                  });
+                }
+              }
+            });
+          }
+        });
+      }
+    }
+  });
+} 

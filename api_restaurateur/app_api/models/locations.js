@@ -12,7 +12,9 @@ var clientSchema = new mongoose.Schema({
     name: {type: String, required: true, maxlength: 30},
     sex: {type: String, required: true, maxlength: 1}, 
     birthdate: {type: Date, required: true},
-    registration_date: {type: Date, required: true}
+    registration_date: {type: String, required: true}, 
+    telephone: {type: String, required: false},
+    email: {type: String, required: false}
 });
 
 // Schema of the fact of the registered clients on a day
