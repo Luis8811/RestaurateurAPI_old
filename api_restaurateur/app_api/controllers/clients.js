@@ -130,6 +130,9 @@ module.exports.readRequestsOfClient = async function(req, res){
 
 // Function to create a new client
 module.exports.createClient = async function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.header('Access-Control-Allow-Methods','GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH');
   Client
   .find({name: req.body.name, sex: req.body.sex, email: req.body.email})
   .exec(function(err, clientsFounded){
