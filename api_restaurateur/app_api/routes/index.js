@@ -42,6 +42,8 @@ router.get('/factsRegisteredClients',ctrlClients.readAllFactsOfRegisteredClients
 router.get('/factsRegisteredClients/:date',ctrlClients.readAFactOfRegisteredClients); // read an specific fact from the collection fact_registered_clients
 router.post('/numberOfRegisteredClientsInAPeriod', ctrlClients.readNumberOfRegisteredClientsInAPeriod); // read the number of the clients registered in a period
 router.post('/createClient', ctrlClients.createClient); // Create a new client
+router.post('/findClientByEmail', ctrlClients.findClientByEmail); // Finds a client
+
 
 //FIXME Me falta poner los nombres de los productos y la fecha de los pedidos pero el resto de los datos están OK
 router.post('/requestsOfClient/',ctrlClients.readRequestsOfClient); // read all the requests of a client

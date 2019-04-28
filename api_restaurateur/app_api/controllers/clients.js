@@ -197,4 +197,17 @@ module.exports.createClient = async function(req, res){
       }
     }
   });
-} 
+}
+
+// Returns the clients with the specified email
+module.exports.findClientByEmail = async function(req, res){
+  Client
+  .find({email: req.body.email})
+  .exec(function(err, clientsFounded){
+    if(err){
+      sendJSONresponse(res, 404, 'An error happened.'); 
+    }else{
+       sendJSONresponse(res,200, clientsFounded);
+    }
+  });
+}
