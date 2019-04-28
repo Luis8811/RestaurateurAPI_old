@@ -201,6 +201,9 @@ module.exports.createClient = async function(req, res){
 
 // Returns the clients with the specified email
 module.exports.findClientByEmail = async function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.header('Access-Control-Allow-Methods','GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH');
   Client
   .find({email: req.body.email})
   .exec(function(err, clientsFounded){
