@@ -63,4 +63,5 @@ router.post('/count_requests_in_date_range',ctrlProcesses.readCountOfFactsOfRequ
 router.post('/countServedClientsInDateRange',ctrlProcesses.countServedClientsInAperiod); // count the number of served clients in a period
 router.post('/moreSoldProductsInDateRange',ctrlProcesses.moreSoldProducts); // obtiene los productos más vendidos en un período
 router.post('/lessSoldProductsInDateRange', ctrlProcesses.lessSoldProducts); // obtiene los prouctos menos vendidos en un período
+router.post('/newRequest', ctrlProcesses.createRequest); // creates a new request
 module.exports = router;

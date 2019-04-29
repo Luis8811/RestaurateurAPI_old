@@ -4,6 +4,8 @@ var Request = mongoose.model('Request');
 var Fact_Request = mongoose.model('Fact_request');
 var Fact_Sold_Product = mongoose.model('Fact_sold_product');
 var utils = require('./utils'); 
+// import moment from 'moment';
+var moment = require('moment');
 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
@@ -329,3 +331,39 @@ res.header('Access-Control-Allow-Headers', 'Content-Type');
   });
 
 };
+
+// Function to create a new request
+module.exports.createRequest = async function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.header('Access-Control-Allow-Methods','GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH');
+  Request.create({
+    products: req.body.products,
+    description: req.body.description
+  }, function(errRequest, requestCreated) {
+    if (errRequest){
+      console.log('An error had occurred at creation of request');
+      sendJSONresponse(res, 404, errRequest);
+    }else {
+      let currentDateTime = moment();
+      let dateOfRequest = currentDateTime.format('YYYY-MM-DD');
+      let timeOfRequest = currentDateTime.format('HH:mm:ss');
+      Fact_Request.create({
+        date: dateOfRequest,
+        time: timeOfRequest,
+        client_id: req.body.client_id,
+        request_id: requestCreated._id
+      }, function(errFactRequest, factRequestCreated){
+        if (errFactRequest){
+          console.log('An error had occurred at creation of fact request');
+          sendJSONresponse(res, 404, errFactRequest);
+        }else {
+          console.log('A new request was created');
+          sendJSONresponse(res, 201, factRequestCreated);
+        }
+      });
+    }
+
+  });
+
+}
