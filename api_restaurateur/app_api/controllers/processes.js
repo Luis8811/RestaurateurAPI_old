@@ -367,3 +367,16 @@ module.exports.createRequest = async function(req, res){
   });
 
 }
+
+//Function to read all the facts of requests opened
+module.exports.readAllFactsOfRequestsOpened =  function(req, res){
+  Fact_Request
+   .find({state:"open"})
+   .exec(function (err, requests){
+     if(err){
+       sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
+     }else{
+       sendJSONresponse(res, 200, requests);
+     }
+   });
+};
