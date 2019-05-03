@@ -71,7 +71,8 @@ var factRequestSchema = new mongoose.Schema({
    date: {type: String, required: true},
    time: {type: String, required: true},
    client_id: {type: mongoose.Schema.Types.ObjectId, required: true},
-   request_id: {type: mongoose.Schema.Types.ObjectId, required: true}
+   request_id: {type: mongoose.Schema.Types.ObjectId, required: true},
+   state: {type: String}
 });
 
 var factSoldProductSchema = new mongoose.Schema({

@@ -368,7 +368,7 @@ module.exports.createRequest = async function(req, res){
 
 }
 
-//Function to read all the facts of requests opened
+// Function to read all the facts of requests opened
 module.exports.readAllFactsOfRequestsOpened =  function(req, res){
   Fact_Request
    .find({state:"open"})
@@ -380,3 +380,45 @@ module.exports.readAllFactsOfRequestsOpened =  function(req, res){
      }
    });
 };
+
+//  Function to close a request
+module.exports.closeRequest = function(req, res){
+  Fact_Request
+  .findById(req.body.idOfFactRequest)
+  .exec(function(err, request){
+    console.log("El id pasado es: " + req.body.idOfFactRequest);
+    if (err) {
+      sendJSONresponse(res, 404, err);
+    }else{
+      request.state ='closed';
+      request.save(function(err, request){
+        if (err) {
+          sendJSONresponse(res, 404, err);
+        } else {
+          sendJSONresponse(res, 200, request);
+        }
+      });
+    }
+  });
+}
+
+// Function to cancel a request
+module.exports.cancelRequest = function(req, res){
+  Fact_Request
+  .findById(req.body.idOfFactRequest)
+  .exec(function(err, request){
+    console.log("El id pasado es: " + req.body.idOfFactRequest);
+    if (err) {
+      sendJSONresponse(res, 404, err);
+    }else{
+      request.state ='canceled';
+      request.save(function(err, request){
+        if (err) {
+          sendJSONresponse(res, 404, err);
+        } else {
+          sendJSONresponse(res, 200, request);
+        }
+      });
+    }
+  });
+}
