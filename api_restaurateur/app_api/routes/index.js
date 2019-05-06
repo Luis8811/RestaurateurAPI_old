@@ -65,6 +65,7 @@ router.post('/moreSoldProductsInDateRange',ctrlProcesses.moreSoldProducts); // o
 router.post('/lessSoldProductsInDateRange', ctrlProcesses.lessSoldProducts); // obtiene los prouctos menos vendidos en un período
 router.post('/newRequest', ctrlProcesses.createRequest); // creates a new request
 router.get('/openedRequests', ctrlProcesses.readAllFactsOfRequestsOpened); // It reads all the opened requests
+router.get('/dataOfOpenedRequests', ctrlProcesses.readAllDataOfRequestsOpened); // It reads all the opened requests
 router.put('/cancelRequest', ctrlProcesses.cancelRequest); // Function to cancel a request
 router.put('/closeRequest', ctrlProcesses.closeRequest); // Function to close a request
 module.exports = router;

@@ -381,6 +381,19 @@ module.exports.readAllFactsOfRequestsOpened =  function(req, res){
    });
 };
 
+// Function to read all the requests opened
+module.exports.readAllDataOfRequestsOpened =  function(req, res){
+  Request
+   .find({state:"open"})
+   .exec(function (err, requests){
+     if(err){
+       sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
+     }else{
+       sendJSONresponse(res, 200, requests);
+     }
+   });
+};
+
 //  Function to close a request
 module.exports.closeRequest = function(req, res){
   Fact_Request

@@ -35,7 +35,9 @@ var productSchema = new mongoose.Schema({
 //Schema of the collection of requests
 var requestSchema = new mongoose.Schema({
     products: {type: [mongoose.Schema.Types.ObjectId], required: true},
-    description: {type: String, maxlength: 200}
+    description: {type: String, maxlength: 200},
+    origin: {type: String, maxlength: 200},
+    state: {type: String, maxlength: 200}
 });
 
 //Schema of the collection of workers
