@@ -409,6 +409,21 @@ module.exports.readAllDataOfFactRequests = function(req, res){
  });
 }; 
 
+// Function to read all the data of fact requests including clients and requests
+module.exports.readAllDataOfOpenedFactRequests = function(req, res){
+  Fact_Request
+  .find({state:"open"})
+  .populate('client_id')
+  .populate('request_id')
+  .exec(function(err, fact_requests){
+    if (err) {
+     sendJSONresponse(res, 500, 'An connection error had occurred. Try connect to the database later.');
+    } else {
+      sendJSONresponse(res, 200, fact_requests);
+    }
+  });
+ }; 
+
 //  Function to close a request
 module.exports.closeRequest = function(req, res){
   Fact_Request
