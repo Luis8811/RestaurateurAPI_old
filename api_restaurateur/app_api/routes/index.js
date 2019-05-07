@@ -66,6 +66,7 @@ router.post('/lessSoldProductsInDateRange', ctrlProcesses.lessSoldProducts); // 
 router.post('/newRequest', ctrlProcesses.createRequest); // creates a new request
 router.get('/openedRequests', ctrlProcesses.readAllFactsOfRequestsOpened); // It reads all the opened requests
 router.get('/dataOfOpenedRequests', ctrlProcesses.readAllDataOfRequestsOpened); // It reads all the opened requests
+router.get('/allDataOfFactRequests', ctrlProcesses.readAllDataOfFactRequests); // It reads all the data of the fact requests and use populate to get the client and request associated
 router.put('/cancelRequest', ctrlProcesses.cancelRequest); // Function to cancel a request
 router.put('/closeRequest', ctrlProcesses.closeRequest); // Function to close a request
 module.exports = router;
