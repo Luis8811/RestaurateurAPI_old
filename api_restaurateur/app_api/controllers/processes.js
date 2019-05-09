@@ -4,6 +4,7 @@ var Request = mongoose.model('Request');
 var Fact_Request = mongoose.model('Fact_request');
 var Fact_Sold_Product = mongoose.model('Fact_sold_product');
 var Fact_ComplaintsAndClaims = mongoose.model('Fact_complaints_and_claims');
+var ComplaintsAndClaims = mongoose.model('ComplaintsAndClaims');
 var utils = require('./utils'); 
 // import moment from 'moment';
 var moment = require('moment');
@@ -467,9 +468,44 @@ module.exports.cancelRequest = function(req, res){
   });
 }
 
-// TODO Function to add a new type of complaints to a request
+//  Function to add a new type of complaints to a request
 module.exports.addNewTypeOfComplaintsToRequest = function(req, res){
-
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.header('Access-Control-Allow-Methods','GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH');
+  let currentDateTime = moment();
+  let dateOfRequest = currentDateTime.format('YYYY-MM-DD');
+  let timeOfRequest = currentDateTime.format('HH:mm:ss');
+  let objectOfResponse = null;
+  ComplaintsAndClaims.create({
+    category: req.body.category,
+    type: req.body.type,
+    text: req.body.text
+  },
+    function(err, complaintsAndClaimsCreated){
+      if (err) {
+        console.log('An error occurred at creation of a new type of complaints/claims');
+        sendJSONresponse(res, 500, err);
+      } else {
+        Fact_ComplaintsAndClaims.create({
+          date: dateOfRequest,
+          time: timeOfRequest,
+          worker_id: req.body.worker_id,
+          complaints_and_claims_id: complaintsAndClaimsCreated._id,
+          request_id: req.body.request_id
+        }, function(errFact, factCreated){
+          if (errFact) {
+            console.log('An error occurred at creation of a new type of complaints/claims');
+            sendJSONresponse(res, 500, errFact);
+          } else { 
+            console.log('A new fact about complaints/claims was created');
+            objectOfResponse = factCreated;
+            sendJSONresponse(res, 201, objectOfResponse);
+          }
+        });
+      }
+  });
+ 
 }
 
 // Function to add a complaint/claim to a request
