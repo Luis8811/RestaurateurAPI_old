@@ -70,4 +70,6 @@ router.get('/allDataOfFactRequests', ctrlProcesses.readAllDataOfFactRequests); /
 router.get('/allDataOfOpenedFactRequests', ctrlProcesses.readAllDataOfOpenedFactRequests); // It reads all the data of the fact requests with state open and use populate to get the client and request associated
 router.put('/cancelRequest', ctrlProcesses.cancelRequest); // Function to cancel a request
 router.put('/closeRequest', ctrlProcesses.closeRequest); // Function to close a request
+router.post('/addNewTypeOfComplaintsToRequest', ctrlProcesses.addNewTypeOfComplaintsToRequest); // Function to add a new type of complaints to a request
+router.post('/addComplaintToRequest', ctrlProcesses.addComplaintToRequest); // Function to add a complaint to a request
 module.exports = router;

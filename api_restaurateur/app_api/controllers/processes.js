@@ -3,6 +3,7 @@ var Product = mongoose.model('Product');
 var Request = mongoose.model('Request');
 var Fact_Request = mongoose.model('Fact_request');
 var Fact_Sold_Product = mongoose.model('Fact_sold_product');
+var Fact_ComplaintsAndClaims = mongoose.model('Fact_complaints_and_claims');
 var utils = require('./utils'); 
 // import moment from 'moment';
 var moment = require('moment');
@@ -462,6 +463,36 @@ module.exports.cancelRequest = function(req, res){
           sendJSONresponse(res, 200, request);
         }
       });
+    }
+  });
+}
+
+// TODO Function to add a new type of complaints to a request
+module.exports.addNewTypeOfComplaintsToRequest = function(req, res){
+
+}
+
+// Function to add a complaint/claim to a request
+module.exports.addComplaintToRequest = function(req, res){
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+  res.header('Access-Control-Allow-Methods','GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH');
+  let currentDateTime = moment();
+  let dateOfRequest = currentDateTime.format('YYYY-MM-DD');
+  let timeOfRequest = currentDateTime.format('HH:mm:ss');
+  Fact_ComplaintsAndClaims.create({
+    date: dateOfRequest,
+    time: timeOfRequest,
+    worker_id: req.body.worker_id, /* // FIXME eliminar el campo worker_id del modelo de la colección Fact_Complaints_and_Claims, estoy inyectando uno por defecto */
+    complaints_and_claims_id: req.body.complaints_and_claims_id,
+    request_id: req.body.request_id   
+  }, function( err, complaintsAndClaimsCreated){
+    if (err) {
+      console.log('An error had occurred at creation of fact request');
+      sendJSONresponse(res, 404, err);
+    } else { 
+      console.log('A new fact of complaints/claims was created');
+      sendJSONresponse(res, 201, complaintsAndClaimsCreated);
     }
   });
 }

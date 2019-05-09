@@ -66,7 +66,8 @@ var factComplaintsAndClaimsSchema = new mongoose.Schema({
   date: {type: String, required: true},
   time: {type: String, required: true},
   worker_id: {type: mongoose.Schema.Types.ObjectId, required: true},
-  complaints_and_claims_id: {type: mongoose.Schema.Types.ObjectId, required: true}
+  complaints_and_claims_id: {type: mongoose.Schema.Types.ObjectId, required: true},
+  request_id: {type: mongoose.Schema.Types.ObjectId, required: true}
 });
 
 var factRequestSchema = new mongoose.Schema({
