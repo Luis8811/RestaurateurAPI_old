@@ -450,14 +450,14 @@ module.exports.closeRequest = function(req, res){
 // Function to cancel a request
 module.exports.cancelRequest = function(req, res){
   Fact_Request
-  .findById(req.body.idOfFactRequest)
+  .find({request_id:req.body.request_id})
   .exec(function(err, request){
-    console.log("El id pasado es: " + req.body.idOfFactRequest);
+    console.log("El id pasado es: " + req.body.request_id);
     if (err) {
       sendJSONresponse(res, 404, err);
     }else{
-      request.state ='canceled';
-      request.save(function(err, request){
+      request[0].state ='canceled';
+      request[0].save(function(err, request){
         if (err) {
           sendJSONresponse(res, 404, err);
         } else {
