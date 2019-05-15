@@ -341,7 +341,8 @@ module.exports.createRequest = async function(req, res){
   res.header('Access-Control-Allow-Methods','GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH');
   Request.create({
     products: req.body.products,
-    description: req.body.description
+    description: req.body.description,
+    state: 'open'
   }, function(errRequest, requestCreated) {
     if (errRequest){
       console.log('An error had occurred at creation of request');
@@ -354,7 +355,8 @@ module.exports.createRequest = async function(req, res){
         date: dateOfRequest,
         time: timeOfRequest,
         client_id: req.body.client_id,
-        request_id: requestCreated._id
+        request_id: requestCreated._id,
+        state: 'open'
       }, function(errFactRequest, factRequestCreated){
         if (errFactRequest){
           console.log('An error had occurred at creation of fact request');
