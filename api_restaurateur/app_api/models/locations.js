@@ -29,7 +29,8 @@ var factRegisteredClientSchema = new mongoose.Schema({
 var productSchema = new mongoose.Schema({
     name: {type: String, required: true, maxlength: 30},
     price: {type: Number, required: true, default:0}, 
-    description: {type: String, required: true, maxlength: 50}
+    description: {type: String, required: true, maxlength: 50},
+    cost: {type: Number, default:0, required: true}
 });
 
 //Schema of the collection of requests
