@@ -80,10 +80,12 @@ var factRequestSchema = new mongoose.Schema({
 });
 
 var factSoldProductSchema = new mongoose.Schema({
-   date: {type: String, required: true},
+   date: {type: String, required: true}, /*
    income: {type: Number, required: true},
    cost: {type: Number, required: true},
-   balance: {type: Number, required: true}
+   balance: {type: Number, required: true}*/
+   product_id: {type: String, required: true},
+   count: {type: Number, required: true, default: 0}
 });
 
 var factFinanceSchema = new mongoose.Schema({

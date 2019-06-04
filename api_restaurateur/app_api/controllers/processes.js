@@ -8,14 +8,154 @@ var ComplaintsAndClaims = mongoose.model('ComplaintsAndClaims');
 var utils = require('./utils'); 
 // import moment from 'moment';
 var moment = require('moment');
+var finances = require('./finances');
 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
   res.set('Access-Control-Allow-Origin', '*');  
   console.log(content);
   res.status(status).json(content); 
-   // res.header('Access-Control-Allow-Origin', '*');
   };
+
+// Function to update all the products from a closed request
+var updateProductsFromClosedRequest = async function(requestId) {
+  console.log('Measuring time of updateProductsFromClosedRequest ->:');
+  console.time('Time of updateProductsFromClosedRequest: ');
+   await Request
+   .findById(requestId)
+   .exec(function (err, requestFounded) {
+    if (err) 
+    {
+      console.log('An error occurred at updateProductsFromClosedRequest.');
+      throw new Error('An error occurred at updateProductsFromClosedRequest');
+    } else {
+      console.log('Array of products related to requestId: ' + requestId);
+      console.log(requestFounded.products);
+      // Get the date
+       Fact_Request
+      .find({request_id: requestId})
+      .exec(function(err, factRequestFounded){
+        if (err) {
+          throw new Error('An error occurred at getting the date of the request!');
+        } else {
+          if (factRequestFounded.length != 1) {
+           throw new Error('Zero or more than one request_id related to FactRequest. Error at getting the date of the request.');
+          } else {
+            const date = factRequestFounded[0].date;
+            const products = requestFounded.products;
+            let i = 0;
+            for (i = 0; i < products.length; i++){
+              addSoldProduct(date, products[i]);
+            }
+            finances.updateFinances(date, products);
+          }
+        }
+      });
+      
+      
+    }
+  });
+  
+  console.timeEnd('Time of updateProductsFromClosedRequest: ');
+} 
+
+
+
+
+
+// Function to get the date when a request was maked
+var getDateOfRequest = async function(requestId) {
+  let result = '';
+  console.time('Time of method getDateOfRequest ->: ');
+  await Fact_Request
+  .find({request_id: requestId})
+  .exec(function(err, factRequestFounded){
+    if (err) {
+      throw new Error('An error occurred at getDateOfRequest');
+    } else {
+      if (factRequestFounded.length != 1) {
+       throw new Error('Zero or more than one request_id related to FactRequest. Error at getDateOfRequest');
+      } else {
+        result = factRequestFounded[0].date;
+      }
+    }
+  });
+  console.timeEnd('Time of method getDateOfRequest ->: ');
+  return result;
+}
+// Function to set the state to close in the request specified
+var updateStateToCloseInRequest = function(requestId) {
+  Request
+  .findById(requestId)
+  .exec(function(err, requestFounded){
+    if (err){
+      throw new Error('An error occurred at updateStateToCloseInRequest');
+    } else {
+      requestFounded.state='closed';
+      requestFounded.save();
+    }
+  });
+
+}
+
+// Function to set the state to close in the FactRequest with request_id specified 
+var updateStateToCloseInFactRequest = function(requestId) {
+  Fact_Request
+  .find({request_id: requestId})
+  .exec(function(err, factsFounded){
+    if (err){
+      throw new Error('An error occurred at updateStateToCloseInFactRequest');
+    } else {
+      if (factsFounded.length != 1){
+        throw new Error('Zero or more than one facts associated to the same request_id in updateStateToCloseInFactRequest');
+      } else {
+        factsFounded[0].state = 'closed';
+        factsFounded[0].save();
+      }
+    }
+  });
+}
+
+// Function to add a sold product
+var addSoldProduct = async function(date, productId) {
+  Fact_Sold_Product
+  .find({date: date, product_id: productId })
+  .exec(function(err, factSoldProductFounded){
+    if (err) {
+      throw new Error('An error occurred at addSoldProduct');
+    } else {
+      if (factSoldProductFounded.length > 1) {
+        throw new Error('More than one product_id and date pair founded. Error at addSoldProduct');
+      } else {
+        if (factSoldProductFounded.length == 0) {
+          createFactSoldProduct(date, productId);
+        }else{
+          factSoldProductFounded[0].count += 1;
+          factSoldProductFounded[0].save();
+        }
+      }
+    }
+  });
+}
+
+// Function to create a new fact of sold product
+var createFactSoldProduct = async function(dateP, productId){
+  console.log('Method createFactSoldProduct -> Param date: ' + dateP + ' Param productId: ' + productId);
+  Fact_Sold_Product.create({
+    date: dateP,
+    product_id: productId,
+    count: 1
+  }, function(err, factCreated){
+    if (err){
+      throw new Error('An error occurred at createFactSoldProduct');
+    } else {
+      console.log('A new fact of sold product was created.');
+      console.log(factCreated);
+    }
+  });
+}
+
+
 
 // Function to determine is currentDate is inside the range between bieginDate and endDate
 // The date format is YYYY-MM-DD
@@ -414,7 +554,7 @@ module.exports.readAllDataOfFactRequests = function(req, res){
 }; 
 
 // Function to read all the data of fact requests including clients and requests
-module.exports.readAllDataOfOpenedFactRequests = function(req, res){
+module.exports.readAllDataOfOpenedFactRequests =  function(req, res){
   Fact_Request
   .find({state:"open"})
   .populate('client_id')
@@ -429,24 +569,19 @@ module.exports.readAllDataOfOpenedFactRequests = function(req, res){
  }; 
 
 //  Function to close a request
-module.exports.closeRequest = function(req, res){
-  Fact_Request
-  .findById(req.body.idOfFactRequest)
-  .exec(function(err, request){
-    console.log("El id pasado es: " + req.body.idOfFactRequest);
-    if (err) {
-      sendJSONresponse(res, 404, err);
-    }else{
-      request.state ='closed';
-      request.save(function(err, request){
-        if (err) {
-          sendJSONresponse(res, 404, err);
-        } else {
-          sendJSONresponse(res, 200, request);
-        }
-      });
-    }
-  });
+module.exports.closeRequest = async function(req, res){
+ updateProductsFromClosedRequest(req.body.request_id);
+  updateStateToCloseInRequest(req.body.request_id);
+  updateStateToCloseInFactRequest(req.body.request_id);
+  Request
+   .findById(req.body.request_id)
+   .exec(function(err, request) {
+      if (err) {
+        sendJSONresponse(res, 500, err);
+      } else {
+        sendJSONresponse(res, 200, request);
+      }
+   });
 }
 
 // Function to cancel a request
