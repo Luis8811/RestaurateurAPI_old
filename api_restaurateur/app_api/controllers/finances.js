@@ -2,73 +2,15 @@ var mongoose = require('mongoose');
 var Fact_finance  = mongoose.model('Fact_finance');
 var utils = require('./utils'); 
 var Product = mongoose.model('Product');
+var processes = require('./processes');
 
 var sendJSONresponse = function(res, status, content) {
     console.log(content);
     res.status(status).json(content); 
   };
 
-// FIXME lograr que devuelva el valor de la suma de los precios, entender bien los métodos asíncronos 
-// Function to get the sum of prices of the specified products
-module.exports.getSumOfPricesOfProducts =  async function(arrayOfProductsIds, date){
-  console.log('Method getSumOfPricesOfProducts ->')
-  let arrayOfPrices = new Array();
-  let indexArrayOfPrices = 0;
-  let sum = 0;
-  let flag = false;
-  let i = 0; 
-  // for (i = 0; i < arrayOfProductsIds.length; i++) {
-   // sum +=  await this.getPriceOfProduct(arrayOfProductsIds[i]);
-  /*
-  if (query != null){
-    console.log('Diferente a null');
-    console.log('Query: ' + query);
-  }else {
-    console.log('Working...');
-  }
-  let j = 0;
- while( query == null){
-   console.log('Waiting...' + j);
-   j++;
- }
- */
-// }
-//sum += await this.getSumOfPricesOfSelectedProducts(arrayOfProductsIds);
- await this.getfSelectedProductsA(arrayOfProductsIds, date);
-//console.log('SELECCIONADOS: ' + arrayOfSelected);
-//const sumA = await this.sumArray(arrayOfSelected);
-//console.log('Total: ' + sumA);
-
-  return 0; 
-}
-
-module.exports.sumArray = async function(arrayOfProducts){
-  let result = 0;
-  for(let i = 0; i < arrayOfProducts.length; i++){
-    result += arrayOfProducts[i];
-  }
-return result;
-}
-
-
-
-// FIXME Intentar eliminar 
-module.exports.getPriceOfProduct = async function(productId){
-  let valor = 0;
-  await Product.findById(productId)
-  .exec(function(err, productFound){
-   if (err){
-    throw new Error('An error occurred at getSumOfPricesOfProducts');
-   }else {
-     console.log(' Price: ' +  productFound.price);
-     valor = productFound.price;
-   }
- });
-   return valor;
-}
-
 // Update finances
-module.exports.updateFinancesAtCloseRequest = async function(arrayOfProductsIds, date){
+module.exports.updateFinancesAtCloseRequest = async function(arrayOfProductsIds, date, requestId, res){
    await Product.find({_id: {$in: arrayOfProductsIds}})
   .exec(function(err, products){
     if (err){
@@ -93,7 +35,7 @@ module.exports.updateFinancesAtCloseRequest = async function(arrayOfProductsIds,
         throw new Error('More than 1 row was founded at date given in updateFinances');
       } else {
         if (factFinancesFounded.length == 0) {
-         createFactFinance(date, sum, costs);
+         createFactFinance(date, sum, costs, res, requestId);
         } else {
           let currentIncome = factFinancesFounded[0].income;
           let currentCost = factFinancesFounded[0].cost;
@@ -104,6 +46,7 @@ module.exports.updateFinancesAtCloseRequest = async function(arrayOfProductsIds,
           factFinancesFounded[0].cost = currentCost;
           factFinancesFounded[0].balance = newBalance;
           factFinancesFounded[0].save();
+          processes.updateStateToCloseInFactRequest(requestId, res);
         }
       }
     }
@@ -158,13 +101,13 @@ module.exports.getSumOfCostsOfProducts = async function(arrayOfProductsIds){
 }
 
   // Function to update the finances in a date
-module.exports.updateFinances = async function(date, products) {
+module.exports.updateFinances = async function(date, products, requestId, res) {
   console.log('Method updateFinances -> Param date: ' + date + ' Param products: ' + products);
-  await this.updateFinancesAtCloseRequest(products, date);
+  await this.updateFinancesAtCloseRequest(products, date, requestId, res);
 }
 
 // Function to create a new Fact of finance
-var createFactFinance =  function(date, income, cost){
+var createFactFinance =  function(date, income, cost, res, requestId){
   console.log('Method createFactFinance -> param date: ' + date + ' param income: ' + income + ' param cost: ' + cost);
   Fact_finance.create({
     date: date,
@@ -173,10 +116,13 @@ var createFactFinance =  function(date, income, cost){
     balance: (income - cost)
   }, function(err, factFinanceCreated){
     if (err){
-      throw new Error('An error occurred at creation of new fact of finance in createFactFinance with date: ' + date + ' -> income: ' + income + ' -> cost: ' + cost);
+      // throw new Error('An error occurred at creation of new fact of finance in createFactFinance with date: ' + date + ' -> income: ' + income + ' -> cost: ' + cost);
+      sendJSONresponse(res, 500, err);
     }else {
       console.log('A new fact of finance was created');
       console.log( factFinanceCreated);
+      // sendJSONresponse(res, 201, factFinanceCreated);
+      processes.updateStateToCloseInFactRequest(requestId, res);
     }
   });
 
