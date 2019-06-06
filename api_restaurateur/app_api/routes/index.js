@@ -6,6 +6,7 @@ var ctrlStaff = require('../controllers/staff');
 var ctrlClients = require('../controllers/clients');
 var ctrlProcesses = require('../controllers/processes');
 var ctrlFinances = require('../controllers/finances');
+var ctrlAdmin = require('../controllers/admin');
 
 
 // Finances
@@ -72,4 +73,7 @@ router.put('/cancelRequest', ctrlProcesses.cancelRequest); // Function to cancel
 router.put('/closeRequest', ctrlProcesses.closeRequest); // Function to close a request
 router.post('/addNewTypeOfComplaintsToRequest', ctrlProcesses.addNewTypeOfComplaintsToRequest); // Function to add a new type of complaints to a request
 router.post('/addComplaintToRequest', ctrlProcesses.addComplaintToRequest); // Function to add a complaint to a request
+
+// Administration
+router.get('/allUsers', ctrlAdmin.readAllUsers); // read all the users
 module.exports = router;

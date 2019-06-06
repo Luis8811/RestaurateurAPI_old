@@ -582,24 +582,9 @@ module.exports.readAllDataOfOpenedFactRequests =  function(req, res){
   });
  }; 
 
- // FIXME Arreglar para que sea consistente
 //  Function to close a request
 module.exports.closeRequest = async function(req, res){
  updateProductsFromClosedRequest(req.body.request_id, res);
-  // await updateStateToCloseInRequest(req.body.request_id);
- // await updateStateToCloseInFactRequest(req.body.request_id);
-  
-  /*
-  Request
-   .findById(req.body.request_id)
-   .exec(function(err, request) {
-      if (err) {
-        sendJSONresponse(res, 500, err);
-      } else {
-        sendJSONresponse(res, 200, request);
-      }
-   }); 
-   */
 }
 
 // Function to cancel a request
