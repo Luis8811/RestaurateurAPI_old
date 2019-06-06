@@ -1,12 +1,5 @@
 var mongoose = require( 'mongoose' );
-/* // Definiendo los esquemas de Mongoose
-var locationSchema = new mongoose.Schema({
-    description: {type: String},
-    price: {type: Number},
-    flavors: [String]  
-}); //esquema del producto
 
-mongoose.model('Dulcelandia', locationSchema); // Para construir (compilar) el esquema locationSchema */
 // Schema of the collection of clients
 var clientSchema = new mongoose.Schema({
     name: {type: String, required: true, maxlength: 30},
@@ -25,7 +18,7 @@ var factRegisteredClientSchema = new mongoose.Schema({
    count: {type: Number, required: true, min: 0}
 });
 
-//Schema of the collection of products
+// Schema of the collection of products
 var productSchema = new mongoose.Schema({
     name: {type: String, required: true, maxlength: 30},
     price: {type: Number, required: true, default:0}, 
@@ -33,7 +26,7 @@ var productSchema = new mongoose.Schema({
     cost: {type: Number, default:0, required: true}
 });
 
-//Schema of the collection of requests
+// Schema of the collection of requests
 var requestSchema = new mongoose.Schema({
     products: {type: [mongoose.Schema.Types.ObjectId], required: true},
     description: {type: String, maxlength: 200},
@@ -41,7 +34,7 @@ var requestSchema = new mongoose.Schema({
     state: {type: String, maxlength: 200}
 });
 
-//Schema of the collection of workers
+// Schema of the collection of workers
 var workerSchema = new mongoose.Schema({
     name: {type: String, required: true, maxlength: 30},
     sex: {type: String, required: true, maxlength: 1}, 
@@ -49,20 +42,27 @@ var workerSchema = new mongoose.Schema({
     job_title: {type: String, required: true, maxlength: 20}
 });
 
-//Schema of the collection of complaints and claims
+// Schema of the collection of complaints and claims
 var complaintsAndClaimsSchema = new mongoose.Schema({
    category: {type: String, required: true, maxlength: 15},
    type: {type: String, required: true, maxlength: 30},
    text: {type: String, required: true, maxlength: 70}
 });
 
-//Schemas of the collections of facts 
+// Schema of the collection of users
+var usersSchema = new mongoose.Schema({
+   user: {type: String, required: true},
+   password: {type: String, required: true},
+   worker_id: {type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Worker'}
+});
+
+// Schema of the collection of facts of clients 
 var factNewClientsSchema = new mongoose.Schema({
     date: {type: Date, required: true, unique: true},
     count: {type: Number, required: true, min: 0, default: 0}
 });
 
-
+// Schema of the collection of facts of complaints and claims 
 var factComplaintsAndClaimsSchema = new mongoose.Schema({
   date: {type: String, required: true},
   time: {type: String, required: true},
@@ -71,6 +71,7 @@ var factComplaintsAndClaimsSchema = new mongoose.Schema({
   request_id: {type: mongoose.Schema.Types.ObjectId, required: true}
 });
 
+// Schema of the collection of facts of requests
 var factRequestSchema = new mongoose.Schema({
    date: {type: String, required: true},
    time: {type: String, required: true},
@@ -79,15 +80,14 @@ var factRequestSchema = new mongoose.Schema({
    state: {type: String}
 });
 
+// Schema of the collection of facts of sold products
 var factSoldProductSchema = new mongoose.Schema({
-   date: {type: String, required: true}, /*
-   income: {type: Number, required: true},
-   cost: {type: Number, required: true},
-   balance: {type: Number, required: true}*/
+   date: {type: String, required: true}, 
    product_id: {type: String, required: true},
    count: {type: Number, required: true, default: 0}
 });
 
+// Schema of the collection of facts of finances
 var factFinanceSchema = new mongoose.Schema({
    date: {type: String, required: true},
    income: {type: Number, required: true, min: 0},
@@ -96,7 +96,10 @@ var factFinanceSchema = new mongoose.Schema({
 });
 
 
-mongoose.model('Client', clientSchema);  //To compile schema clientSchema 
+
+// Compiling schemas
+
+mongoose.model('Client', clientSchema); 
 mongoose.model('Worker', workerSchema);
 mongoose.model('Product', productSchema);
 mongoose.model('Fact_new_client', factNewClientsSchema);
@@ -107,3 +110,4 @@ mongoose.model('Request', requestSchema);
 mongoose.model('Fact_request', factRequestSchema, 'fact_requests');
 mongoose.model('Fact_sold_product', factSoldProductSchema, 'fact_sold_products');
 mongoose.model('Fact_finance', factFinanceSchema, 'fact_finances');
+mongoose.model('User', usersSchema);
