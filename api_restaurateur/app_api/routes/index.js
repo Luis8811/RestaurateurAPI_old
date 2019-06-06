@@ -76,4 +76,5 @@ router.post('/addComplaintToRequest', ctrlProcesses.addComplaintToRequest); // F
 
 // Administration
 router.get('/allUsers', ctrlAdmin.readAllUsers); // read all the users
+router.post('/createUser', ctrlAdmin.createUser); // Creating a new user
 module.exports = router;
