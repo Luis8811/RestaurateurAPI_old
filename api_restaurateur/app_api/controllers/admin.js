@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Worker = mongoose.model('Worker');
+const bcrypt = require('bcrypt');
 
 // Function to send the response in an JSON object
 var sendJSONresponse = function(res, status, content) {
@@ -29,7 +30,6 @@ module.exports.readAllUsers = async function(req, res){
        });
     };
 
-//FIXME To include bcrypt for password encryption
 // Function to create a new user
 module.exports.createUser = async function(req, res){
   res.header('Access-Control-Allow-Origin', '*');
@@ -63,17 +63,23 @@ module.exports.createUser = async function(req, res){
                 if (errCreationOfWorker) {
                   sendJSONresponse(res, 500, 'An error happened at connect to the database for creating a new user.');
                 } else {
-                  User.create({
-                    user: req.body.user,
-                    password: req.body.password, //TODO To include password encryption with bcrypt
-                    worker_id: workerCreated._id
-                  }, function(errCreatingUser, userCreated){
-                    if (errCreatingUser){
-                      sendJSONresponse(res, 500, 'An error happened at connect to the database for creating a new user.');
-                    } else {
-                      sendJSONresponse(res, 201, userCreated);
+                  bcrypt.hash(req.body.password, 10, function(errBcrypt, hash) {
+                    if (errBcrypt) {
+                      sendJSONresponse(res, 500, 'An error happened at trying to encrypt the password');
+                    }else {
+                      User.create({
+                        user: req.body.user,
+                        password: hash, 
+                        worker_id: workerCreated._id
+                      }, function(errCreatingUser, userCreated){
+                        if (errCreatingUser){
+                          sendJSONresponse(res, 500, 'An error happened at connect to the database for creating a new user.');
+                        } else {
+                          sendJSONresponse(res, 201, userCreated);
+                        }
+                      });
                     }
-                  });
+                  });   
                 }
               });
             }
@@ -81,6 +87,5 @@ module.exports.createUser = async function(req, res){
         });
       }
     }
-
   });
 }
