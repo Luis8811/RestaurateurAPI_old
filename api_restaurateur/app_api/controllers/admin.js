@@ -65,7 +65,7 @@ module.exports.createUser = async function(req, res){
                 } else {
                   User.create({
                     user: req.body.user,
-                    password: req.body.password,
+                    password: req.body.password, //TODO To include password encryption with bcrypt
                     worker_id: workerCreated._id
                   }, function(errCreatingUser, userCreated){
                     if (errCreatingUser){
