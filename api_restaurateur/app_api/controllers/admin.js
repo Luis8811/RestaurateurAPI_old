@@ -89,3 +89,34 @@ module.exports.createUser = async function(req, res){
     }
   });
 }
+
+// Function to login a user
+module.exports.login = async function(req, res){
+  User
+  .find({user: req.body.user})
+  .exec(function(errFindUser, users){
+    if (errFindUser){
+      console.log('An error occurred at login');
+      sendJSONresponse(res, 500, errFindUser);
+    } else {
+      if (users.length == 0){
+        sendJSONresponse(res, 400, 'Check username!');
+      } else {
+        const hashedPassword = users[0].password;
+        bcrypt.compare(req.body.password, hashedPassword, function(errComparePasswords, resultOfComparePasswords){
+          if (errComparePasswords){
+            console.log('An error occurred at login at comparing password from the database and the password introduced by the user.');
+            sendJSONresponse(res, 500, errComparePasswords);
+          } else {
+            if (resultOfComparePasswords == true){
+              sendJSONresponse(res, 200, 'Login successfull');
+            } else {
+              sendJSONresponse(res, 400, 'Check your password!');
+            }
+          }
+        });
+      }
+    }
+  });
+
+}
