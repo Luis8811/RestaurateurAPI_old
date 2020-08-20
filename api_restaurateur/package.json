@@ -6,7 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "canvas": "^2.3.1",
     "chart.js": "^2.7.3",
     "cookie-parser": "~1.4.3",
